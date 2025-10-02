@@ -1,0 +1,68 @@
+﻿@model List<RecipeViewModel>
+
+@foreach (var recipe in Model)
+{
+    var imgSrc = "";
+    if (recipe.RecipeDetails.ImageBytes != null)
+    {
+        var base64 = Convert.ToBase64String(recipe.RecipeDetails.ImageBytes);
+        imgSrc = String.Format("data:image/png;base64,{0}", base64);
+
+    }
+    var total = recipe.RecipeDetails.PrepMins + recipe.RecipeDetails.CookMins;
+
+    <h1>Recipes</h1>
+    <hr />
+    <a href="@Url.Action("ViewRecipe", new { RecipeID = 1 })">
+        <div class="row border rounded">
+            <div class="col-md-6">
+                <img src=" @imgSrc" class="mx-auto d-block" style="max-height:300px;width:auto;height:auto" />
+            </div>
+            <div class="col-md-6 border-start">
+                <div class="row border-bottom">
+                    <div class="col-md-12">
+                        <h3 class="h3">@recipe.RecipeDetails.Title</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="min-height:160px">
+                        @Html.LabelFor(r => r.First().RecipeDetails.Description)
+                        <label class="form-label">@recipe.RecipeDetails.Description</label>
+                    </div>
+                </div>
+                <div class="row border-bottom border-top">
+                    <div class="col-md-6 text-center border-end">
+                        @Html.LabelFor(r => r.First().RecipeDetails.PrepMins)
+                        <label class="form-label">@recipe.RecipeDetails.PrepMins</label>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        @Html.LabelFor(r => r.First().RecipeDetails.CookMins)
+                        <label class="form-label">@recipe.RecipeDetails.CookMins</label>
+                    </div>
+                </div>
+                <div class="row text-center border-bottom">
+                    <div class="col-md-12">
+                        <label class="form-label">Total time: @total</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(r => r.First().RecipeDetails.Tags)
+                        <label class="form-label">@recipe.RecipeDetails.Tags</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    <hr />
+}
+
+<style>
+    a,
+    a:visited,
+    a:hover,
+    a:active {
+        color: inherit;
+        text-decoration: none;
+    }
+</style>
