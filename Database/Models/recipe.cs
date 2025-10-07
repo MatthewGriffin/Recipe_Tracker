@@ -1,90 +1,92 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using JetBrains.Annotations;
 using recipe_tracker.Models;
 
-namespace recipe_tracker.Database.Models
+namespace recipe_tracker.Database.Models;
+
+public class Recipe
 {
-    public class Recipe
-    {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RecipeID { get; set; }
-        public required RecipeDetails RecipeDetails { get; set; }
-        public required ICollection<Instruction> Instructions { get; set; } = [];
-        public required ICollection<Ingredient> Ingredients { get; set; } = [];
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int RecipeId { get; init; }
+    public required RecipeDetails RecipeDetails { get; init; }
+    public required List<Instruction> Instructions { get; init; } = [];
+    public required List<Ingredient> Ingredients { get; init; } = [];
 
-        public RecipeViewModel ToRecipeViewModel()
+    public RecipeViewModel ToRecipeViewModel()
+    {
+        return new RecipeViewModel
         {
-            return new RecipeViewModel()
-            {
-                RecipeDetails = RecipeDetails,
-                Instructions = string.Join("\r\n", Instructions.Select(x => x.Text)),
-                Ingredients = string.Join("\r\n", Instructions.Select(x => x.Text)),
-                InstructionList = Instructions,
-                IngredientList = Ingredients,
-            };
-        }
+            RecipeId = RecipeId,
+            RecipeDetails = RecipeDetails,
+            Instructions = [.. Instructions.Select(i => new InstructionViewModel { Text = i.Text })],
+            Ingredients = [.. Ingredients.Select(i => new IngredientViewModel { Detail = i.Detail })]
+        };
     }
+}
 
-    public class RecipeDetails
+public class RecipeDetails
+{
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [UsedImplicitly]
+    public int RecipeDetailsId { get; set; }
+    [MaxLength(50)]
+    [DisplayName("Recipe Name: ")]
+    public required string Title { get; init; }
+    [MaxLength(1000)]
+    [DisplayName("Description: ")]
+    public required string Description { get; init; }
+    [DisplayName("Servings: ")]
+    public required int Servings { get; init; } 
+    [DisplayName("Prep Time (Mins): ")]
+    public required int PrepMins { get; init; }
+    [DisplayName("Cook Time (Mins): ")]
+    public required int CookMins { get; init; } 
+    [DisplayName("Tags: ")]
+    [MaxLength(100)]
+    public required string Tags { get; init; }
+    public RecipeImage? Image { get; private init; }
+
+    public static implicit operator RecipeDetails(RecipeDetailsViewModel v)
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RecipeDetailsID { get; set; }
-        [DisplayName("Recipe Name: ")]
-        public required string Title { get; set; }
-        [DisplayName("Description: ")]
-        public required string Description { get; set; }
-        [DisplayName("Servings: ")]
-        public required int Servings { get; set; } = 0;
-        [DisplayName("Prep Time (Mins): ")]
-        public required int PrepMins { get; set; } = 0;
-        [DisplayName("Cook Time (Mins): ")]
-        public required int CookMins { get; set; } = 0;
-        [DisplayName("Tags: ")]
-        public required string Tags { get; set; }
-        public RecipeImage? Image { get; set; }
-
-        public static implicit operator RecipeDetails(RecipeDetailsViewModel v)
+        using var memoryStream = new MemoryStream();
+        v.Image?.CopyToAsync(memoryStream);
+        return new RecipeDetails
         {
-            using (var memoryStream = new MemoryStream())
+            Title = v.Title,
+            Description = v.Description,
+            Servings = v.Servings,
+            PrepMins = v.PrepMins,
+            CookMins = v.CookMins,
+            Tags = v.Tags,
+            Image = new RecipeImage
             {
-                v.Image?.CopyToAsync(memoryStream);
-                return new RecipeDetails()
-                {
-                    Title = v.Title,
-                    Description = v.Description,
-                    Servings = v.Servings,
-                    PrepMins = v.PrepMins,
-                    CookMins = v.CookMins,
-                    Tags = v.Tags,
-                    Image = new RecipeImage()
-                    {
-                        Image = memoryStream.ToArray()
-                    },
-                };
+                Image = memoryStream.ToArray()
             }
-        }
+        };
     }
+}
 
-    public class Instruction
-    {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int InstructionID { get; set; }
-        public required string Text { get; set; }
-    }
+public class Instruction
+{
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int? InstructionId { get; init; }
+    [MaxLength(500)]
+    public required string Text { get; init; }
+}
 
-    public class Ingredient
-    {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IngredientID { get; set; }
-        public required string Detail { get; set; }
-    }
+public class Ingredient
+{
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int? IngredientId { get; init; }
+    [MaxLength(50)]
+    public required string Detail { get; init; }
+}
 
-    public class RecipeImage()
-    {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ImageID { get; set; }
-        public required byte[] Image { get; set; }
-    }
+public class RecipeImage
+{
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int ImageId { get; init; }
+    public required byte[] Image { get; init; }
 }

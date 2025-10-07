@@ -1,0 +1,25 @@
+version: "1.0"
+profile:
+  name: qodana.starter
+include:
+  - name: ConvertToConstant.Local
+  - name: MissingAltAttributeInImgTag
+  - name: CssInvalidPropertyValue
+  - name: CssInvalidPseudoSelector
+  - name: CssNoGenericFontName
+  - name: CssOverwrittenProperties
+  - name: PropertyCanBeMadeInitOnly.Global
+  - name: RegExpRedundantEscape
+  - name: RedundantEmptyObjectCreationArgumentList
+  - name: CssRedundantUnit
+  - name: UnusedMember.Global
+  - name: RegExpUnnecessaryNonCapturingGroup
+  - name: UseCollectionCountProperty
+  - name: ArrangeNamespaceBody
+  - name: ArrangeTrailingCommaInMultilineLists
+  - name: ArrangeObjectCreationWhenTypeEvident
+  - name: UseStringInterpolation
+exclude:
+  - name: All
+    paths:
+      - wwwroot/lib

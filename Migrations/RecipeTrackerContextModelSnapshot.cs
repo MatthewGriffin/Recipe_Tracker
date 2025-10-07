@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using recipe_tracker.Database.Repositories;
+using recipe_tracker.Database;
 
 #nullable disable
 

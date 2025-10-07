@@ -13,10 +13,10 @@
         <div class="d-inline">
             <h3 class="h3 d-inline">Details</h3>
             <div class="float-end d-inline">
-                <input id="btnSubmit" type="submit" class="btn btn-secondary" />
+                <input id="btnSubmit" type="submit" class="btn btn-secondary"/>
             </div>
         </div>
-        <hr />
+        <hr/>
         <div class="col-md-12">
             @Html.LabelFor(m => m.RecipeDetails.Title, new { @class = "form-label" })
             @Html.TextBoxFor(m => m.RecipeDetails.Title, new { @class = "form-control" })
@@ -29,27 +29,36 @@
         <div class="col-md-12">
             @Html.LabelFor(m => m.RecipeDetails.Description, new { @class = "form-label" })
             @Html.TextAreaFor(m => m.RecipeDetails.Description, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Description, "", htmlAttributes: new { @class =
-            "text-danger" })
+            @Html.ValidationMessageFor(m => m.RecipeDetails.Description, "", htmlAttributes: new
+            {
+                @class =
+                    "text-danger"
+            })
         </div>
         <div class="col-md-6">
             @Html.LabelFor(m => m.RecipeDetails.PrepMins, new { @class = "form-label" })
             @Html.TextBoxFor(m => m.RecipeDetails.PrepMins, new { @class = "form-control", type = "number" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.PrepMins, "", htmlAttributes: new { @class = "text-danger"
-                        })
+            @Html.ValidationMessageFor(m => m.RecipeDetails.PrepMins, "", htmlAttributes: new
+            {
+                @class = "text-danger"
+            })
         </div>
         <div class="col-md-6">
             @Html.LabelFor(m => m.RecipeDetails.CookMins, new { @class = "form-label" })
             @Html.TextBoxFor(m => m.RecipeDetails.CookMins, new { @class = "form-control", type = "number" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.CookMins, "", htmlAttributes: new { @class = "text-danger"
-                        })
+            @Html.ValidationMessageFor(m => m.RecipeDetails.CookMins, "", htmlAttributes: new
+            {
+                @class = "text-danger"
+            })
 
         </div>
         <div class="col-md-6">
             @Html.LabelFor(m => m.RecipeDetails.Servings, new { @class = "form-label" })
             @Html.TextBoxFor(m => m.RecipeDetails.Servings, new { @class = "form-control", type = "number" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Servings, "", htmlAttributes: new { @class = "text-danger"
-                        })
+            @Html.ValidationMessageFor(m => m.RecipeDetails.Servings, "", htmlAttributes: new
+            {
+                @class = "text-danger"
+            })
 
         </div>
         <div class="col-md-6">
@@ -59,19 +68,89 @@
         </div>
     </div>
     <div class="row pb-4">
-        <hr />
+        <hr/>
         <h3 class="h3">@Html.DisplayNameFor(m => m.Ingredients)</h3>
-        <h6 class="h6">*Add each ingredient on a newline bullet points will be auto added*</h6>
-        <hr />
-        @Html.TextAreaFor(m => m.Ingredients, new { @class = "form-control", style = "height: 300px" })
+        <hr/>
+        <table>
+            <tbody id="ingredientsBody">
+            @{
+                for (var i = 0; i < Model.Ingredients.Count;)
+                {
+                    <tr>
+                        <td>
+                            @Html.ValueFor(r => r.Ingredients[i].Detail)
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    <input id="addIngredient"/>
+                </td>
+                <td>
+                    <input type="button" id="btnAddIngredient" value="Add ingredient"/>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
         @Html.ValidationMessageFor(m => m.Ingredients, "", htmlAttributes: new { @class = "text-danger" })
     </div>
     <div class="row">
-        <hr />
+        <hr/>
         <h3 class="h3">@Html.DisplayNameFor(m => m.Instructions)</h3>
-        <h6 class="h6">*Add each step on a newline they will be auto numbered*</h6>
-        <hr />
-        @Html.TextAreaFor(m => m.Instructions, new { @class = "form-control", style = "height: 300px" })
+        <hr/>
+        <table>
+            <tbody id="instructionsBody">
+            @{
+                for (var i = 0; i < Model.Instructions.Count;)
+                {
+                    <tr>
+                        <td>
+                            @Html.ValueFor(r => r.Instructions[i].Text)
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    <input id="addInstruction"/>
+                </td>
+                <td>
+                    <input type="button" id="btnAddInstruction" value="Add Instruction"/>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
         @Html.ValidationMessageFor(m => m.Instructions, "", htmlAttributes: new { @class = "text-danger" })
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        $('#btnAddIngredient').click(function () {
+            let rowCount = $('#ingredientsBody tr').length;
+            let ingredient = $('#addIngredient').val();
+
+            let newRowHtml =
+                '<tr><td>' +
+                '<input name="Ingredients[' + rowCount + '].Detail" value="' + ingredient + '"/>' +
+                '</td></tr>'
+            $('#ingredientsBody').append(newRowHtml);
+        });
+
+        $('#btnAddInstruction').click(function () {
+            let rowCount = $('#instructionsBody tr').length;
+            let instruction = $('#addInstruction').val();
+
+            let newRowHtml =
+                '<tr><td>' +
+                '<input name="Instructions[' + rowCount + '].Text" value="' + instruction + '"/>' +
+                '</td></tr>'
+            $('#instructionsBody').append(newRowHtml);
+        });
+    </script>
+}

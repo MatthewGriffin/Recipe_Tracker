@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using recipe_tracker.Database.Repositories;
+using recipe_tracker.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +24,6 @@ using (var context = new RecipeTrackerContext())
     context.Database.Migrate();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.MapStaticAssets();
