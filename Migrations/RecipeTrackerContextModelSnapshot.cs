@@ -18,63 +18,65 @@ namespace recipe_tracker.Migrations
 
             modelBuilder.Entity("recipe_tracker.Database.Models.Ingredient", b =>
                 {
-                    b.Property<int>("IngredientID")
+                    b.Property<int>("IngredientId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Detail")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("RecipeID")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("IngredientID");
+                    b.HasKey("IngredientId");
 
-                    b.HasIndex("RecipeID");
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.Instruction", b =>
                 {
-                    b.Property<int>("InstructionID")
+                    b.Property<int>("InstructionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RecipeID")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
                         .IsRequired()
+                        .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("InstructionID");
+                    b.HasKey("InstructionId");
 
-                    b.HasIndex("RecipeID");
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Instructions");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.Recipe", b =>
                 {
-                    b.Property<int>("RecipeID")
+                    b.Property<int>("RecipeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RecipeDetailsID")
+                    b.Property<int>("RecipeDetailsId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("RecipeID");
+                    b.HasKey("RecipeId");
 
-                    b.HasIndex("RecipeDetailsID");
+                    b.HasIndex("RecipeDetailsId");
 
                     b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.RecipeDetails", b =>
                 {
-                    b.Property<int>("RecipeDetailsID")
+                    b.Property<int>("RecipeDetailsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -83,9 +85,10 @@ namespace recipe_tracker.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ImageID")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PrepMins")
@@ -96,22 +99,24 @@ namespace recipe_tracker.Migrations
 
                     b.Property<string>("Tags")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("RecipeDetailsID");
+                    b.HasKey("RecipeDetailsId");
 
-                    b.HasIndex("ImageID");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("RecipeDetails");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.RecipeImage", b =>
                 {
-                    b.Property<int>("ImageID")
+                    b.Property<int>("ImageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -119,7 +124,7 @@ namespace recipe_tracker.Migrations
                         .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.HasKey("ImageID");
+                    b.HasKey("ImageId");
 
                     b.ToTable("RecipeImages");
                 });
@@ -128,21 +133,21 @@ namespace recipe_tracker.Migrations
                 {
                     b.HasOne("recipe_tracker.Database.Models.Recipe", null)
                         .WithMany("Ingredients")
-                        .HasForeignKey("RecipeID");
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.Instruction", b =>
                 {
                     b.HasOne("recipe_tracker.Database.Models.Recipe", null)
                         .WithMany("Instructions")
-                        .HasForeignKey("RecipeID");
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.Recipe", b =>
                 {
                     b.HasOne("recipe_tracker.Database.Models.RecipeDetails", "RecipeDetails")
                         .WithMany()
-                        .HasForeignKey("RecipeDetailsID")
+                        .HasForeignKey("RecipeDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -153,7 +158,7 @@ namespace recipe_tracker.Migrations
                 {
                     b.HasOne("recipe_tracker.Database.Models.RecipeImage", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageID");
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Image");
                 });

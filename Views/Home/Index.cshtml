@@ -15,10 +15,13 @@
     
     <a href="@Url.Action("ViewRecipe", new { RecipeID = recipe.RecipeId })">
         <div class="row border rounded">
-            <div class="col-md-6">
-                <img src=" @imgSrc" class="mx-auto d-block" style="max-height:300px;width:auto;height:auto" alt="image of recipe"/>
-            </div>
-            <div class="col-md-6 border-start">
+            @if (recipe.RecipeDetails.ImageBytes != null)
+            {
+                <div class="col-md-6">
+                    <img src=" @imgSrc" class="mx-auto d-block" style="max-height:300px;width:auto;height:auto" alt="image of recipe"/>
+                </div>
+            }
+            <div class="col border-start">
                 <div class="row border-bottom">
                     <div class="col-md-12">
                         <h3 class="h3">@recipe.RecipeDetails.Title</h3>

@@ -256,3 +256,4 @@
 /run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/obj/Debug/net9.0/compressed/psbk8nkavi-fihwybge2m.gz
 /run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/obj/Debug/net9.0/compressed/wxtms3wtn4-fihwybge2m.gz
 /run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/obj/Debug/net9.0/recipe_tracker.sourcelink.json
+/run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/bin/Debug/net9.0/JetBrains.Annotations.dll
