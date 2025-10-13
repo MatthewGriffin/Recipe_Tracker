@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using recipe_tracker.Database;
+using recipe_tracker.Models;
 using recipe_tracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,9 @@ builder.Services.AddDbContext<RecipeTrackerContext>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<RecipeTrackerContext>().AddDefaultTokenProviders();
 builder.Services.AddResponseCaching();
+builder.Services.AddOptions();
+builder.Services.Configure<EmailSettings>(builder.Configuration)
+    .AddSingleton(sp => sp.GetRequiredService<IOptions<EmailSettings>>().Value);
 
 builder.Services.AddScoped<RoleSeeder>();
 

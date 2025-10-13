@@ -1,13 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using recipe_tracker.Helpers;
 using recipe_tracker.Models;
 
 namespace recipe_tracker.Controllers;
 
-public class AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+public class AccountController(
+    UserManager<IdentityUser> userManager,
+    SignInManager<IdentityUser> signInManager,
+    IOptions<EmailSettings> emailSettings)
     : Controller
 {
+    public EmailSettings EmailSettings = emailSettings.Value;
+
     [HttpGet]
     public IActionResult Register()
     {
@@ -39,7 +45,7 @@ public class AccountController(UserManager<IdentityUser> userManager, SignInMana
             Request.Scheme);
         var body = $"Welcome to the recipe tracker {user.UserName}.<br/><br/><a href='" + callbackUrl +
                    "'>Please click here to confirm your account!.</a>";
-        var sender = new EmailSender("smtp.gmail.com", "demengies@gmail.com", "zeja mxqr rfaq dvwn", 587,
+        var sender = new EmailSender(EmailSettings.Host, EmailSettings.From, EmailSettings.Password, EmailSettings.Port,
             user.UserName
             , body, "Please confirm your account for recipe tracker!");
         sender.SendEmail();
