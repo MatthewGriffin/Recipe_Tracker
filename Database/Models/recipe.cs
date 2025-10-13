@@ -15,6 +15,7 @@ public class Recipe
     public required RecipeDetails RecipeDetails { get; init; }
     public required List<Instruction> Instructions { get; init; } = [];
     public required List<Ingredient> Ingredients { get; init; } = [];
+    public required User User { get; init; }
 
     public RecipeViewModel ToRecipeViewModel()
     {
@@ -27,7 +28,8 @@ public class Recipe
             [
                 .. Ingredients.Select(i => new IngredientViewModel
                     { Detail = i.Detail, Quantity = i.Quantity, Unit = i.Unit })
-            ]
+            ],
+            User = User
         };
     }
 }

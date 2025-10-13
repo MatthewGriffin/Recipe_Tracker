@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "recipe_tracker/1.0.0": {
         "dependencies": {
+          "EntityFrameworkCore.EncryptColumn": "9.0.0",
           "JetBrains.Annotations": "2025.2.2",
           "Microsoft.EntityFrameworkCore.Design": "9.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.9",
@@ -49,6 +50,17 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.11.4.0",
             "fileVersion": "1.1100.424.31005"
+          }
+        }
+      },
+      "EntityFrameworkCore.EncryptColumn/9.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "9.0.9"
+        },
+        "runtime": {
+          "lib/netcoreapp9.0/EntityFrameworkCore.EncryptColumn.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -1217,6 +1229,13 @@
       "sha512": "sha512-Sf4BoE6Q3jTgFkgBkx7qztYOFELBCo+wQgpYDwal/qJ1unBH73ywPztIJKXBXORRzAeNijsuxhk94h0TIMvfYg==",
       "path": "azure.identity/1.11.4",
       "hashPath": "azure.identity.1.11.4.nupkg.sha512"
+    },
+    "EntityFrameworkCore.EncryptColumn/9.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yQQ0l13q6nqYdVKMYWd1kIOFgvh3KY2RDSc/RbpjNpbOaXpHxSmJ2OIsEMLsCMP96tGLtYb9kE8fXQ8r3cY8dQ==",
+      "path": "entityframeworkcore.encryptcolumn/9.0.0",
+      "hashPath": "entityframeworkcore.encryptcolumn.9.0.0.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",

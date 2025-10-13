@@ -75,9 +75,14 @@ namespace recipe_tracker.Migrations
                     b.Property<int>("RecipeDetailsId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("RecipeId");
 
                     b.HasIndex("RecipeDetailsId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
                 });
@@ -123,6 +128,32 @@ namespace recipe_tracker.Migrations
                     b.ToTable("RecipeImages");
                 });
 
+            modelBuilder.Entity("recipe_tracker.Database.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("recipe_tracker.Database.Models.Ingredient", b =>
                 {
                     b.HasOne("recipe_tracker.Database.Models.Recipe", null)
@@ -145,7 +176,15 @@ namespace recipe_tracker.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("recipe_tracker.Database.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("RecipeDetails");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("recipe_tracker.Database.Models.RecipeDetails", b =>

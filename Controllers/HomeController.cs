@@ -12,9 +12,9 @@ public class HomeController(ILogger<HomeController> logger, RecipeTrackerContext
     public IActionResult Index()
     {
         var recipes = dbContext.Recipes.Include(r => r.RecipeDetails).Include(r => r.RecipeDetails.Image)
-                                      .Include(r => r.Instructions).Include(r => r.Ingredients)
-                                      .OrderByDescending(r=>r.RecipeId)
-                                      .Select(r => r.ToRecipeViewModel()).ToList();
+            .Include(r => r.Instructions).Include(r => r.Ingredients)
+            .OrderByDescending(r => r.RecipeId)
+            .Select(r => r.ToRecipeViewModel()).ToList();
         return View(recipes);
     }
 
@@ -24,8 +24,8 @@ public class HomeController(ILogger<HomeController> logger, RecipeTrackerContext
     {
         logger.LogInformation("Requesting recipe {id}", recipeId);
         var recipe = dbContext.Recipes.Include(r => r.RecipeDetails).Include(r => r.RecipeDetails.Image)
-                                      .Include(r => r.Instructions).Include(r => r.Ingredients)
-                                      .First(recipe => recipe.RecipeId == recipeId);
+            .Include(r => r.Instructions).Include(r => r.Ingredients)
+            .First(recipe => recipe.RecipeId == recipeId);
         var vm = recipe.ToRecipeViewModel();
         logger.LogInformation("Recipe {id} found loading view page", recipeId);
         return View(vm);
@@ -51,10 +51,15 @@ public class HomeController(ILogger<HomeController> logger, RecipeTrackerContext
         dbContext.Recipes.Add(dbRecipe);
         dbContext.SaveChanges();
         logger.LogInformation("Redirecting user to view recipe page");
-        return RedirectToAction("ViewRecipe", new { recipeId = dbRecipe.RecipeId
-    });
-}
+        return RedirectToAction("ViewRecipe", new
+        {
+            recipeId = dbRecipe.RecipeId
+        });
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
 }
