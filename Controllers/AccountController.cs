@@ -12,7 +12,7 @@ public class AccountController(
     IOptions<EmailSettings> emailSettings)
     : Controller
 {
-    public EmailSettings EmailSettings = emailSettings.Value;
+    private readonly EmailSettings _emailSettings = emailSettings.Value;
 
     [HttpGet]
     public IActionResult Register()
@@ -45,7 +45,9 @@ public class AccountController(
             Request.Scheme);
         var body = $"Welcome to the recipe tracker {user.UserName}.<br/><br/><a href='" + callbackUrl +
                    "'>Please click here to confirm your account!.</a>";
-        var sender = new EmailSender(EmailSettings.Host, EmailSettings.From, EmailSettings.Password, EmailSettings.Port,
+
+        var sender = new EmailSender(_emailSettings.Host, _emailSettings.From, _emailSettings.Password,
+            _emailSettings.Port,
             user.UserName
             , body, "Please confirm your account for recipe tracker!");
         sender.SendEmail();

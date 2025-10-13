@@ -2,8 +2,8 @@ namespace recipe_tracker.Models;
 
 public class EmailSettings
 {
-    public required string Host { get; set; }
-    public int Port { get; set; }
-    public required string From { get; set; }
-    public required string Password { get; set; }
+    public required string Host { get; init; }
+    public int Port { get; init; }
+    public required string From { get; init; }
+    public required string Password { get; init; }
 }
