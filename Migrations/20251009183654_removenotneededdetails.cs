@@ -5,7 +5,7 @@
 namespace recipe_tracker.Migrations
 {
     /// <inheritdoc />
-    public partial class removenotneededdetails : Migration
+    public partial class removeNotNeededDetails : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

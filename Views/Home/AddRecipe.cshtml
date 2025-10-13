@@ -59,7 +59,7 @@
                     <tbody id="ingredientsBody">
                     @{
                         <tr></tr>
-                        if (Model.Ingredients != null && Model.Ingredients.Any())
+                        if (Model.Ingredients.Any())
                         {
                             for (var i = 0; i < Model.Ingredients.Count;)
                             {
@@ -126,7 +126,7 @@
                     <tbody id="instructionsBody">
                     <tr></tr>
                     @{
-                        if (Model.Instructions != null && Model.Instructions.Any())
+                        if (Model.Instructions.Any())
                         {
                             for (var i = 0; i < Model.Instructions.Count;)
                             {

@@ -11,7 +11,7 @@ namespace recipe_tracker.Migrations
 {
     [DbContext(typeof(RecipeTrackerContext))]
     [Migration("20251009183654_removenotneededdetails")]
-    partial class removenotneededdetails
+    partial class removeNotNeededDetails
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

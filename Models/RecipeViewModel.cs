@@ -7,8 +7,8 @@ public class RecipeViewModel
 {
     public int RecipeId { get; init; }
     public RecipeDetailsViewModel RecipeDetails { get; init; } = new();
-    public required List<InstructionViewModel>? Instructions { get; init; }
-    public required List<IngredientViewModel>? Ingredients { get; init; }
+    public required List<InstructionViewModel> Instructions { get; init; }
+    public required List<IngredientViewModel> Ingredients { get; init; }
 
     public Recipe ToRecipeDbModel()
     {
@@ -16,10 +16,10 @@ public class RecipeViewModel
         {
             RecipeDetails = RecipeDetails,
             Instructions =
-                [.. (Instructions ?? []).Select(i => new Instruction { Text = i.Text })],
+                [.. Instructions.Select(i => new Instruction { Text = i.Text })],
             Ingredients =
             [
-                .. (Ingredients ?? []).Select(i => new Ingredient
+                .. Ingredients.Select(i => new Ingredient
                     { Detail = i.Detail, Quantity = i.Quantity, Unit = i.Unit })
             ]
         };
