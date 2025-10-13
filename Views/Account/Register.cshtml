@@ -1,0 +1,19 @@
+@model RegisterViewModel;
+
+<form asp-controller="Account" asp-action="Register" method="post">
+    <div>
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" asp-for="Email"/>
+    </div>
+    <div>
+        <label class="form-label">Password</label>
+        <input class="form-control" type="password" asp-for="Password"/>
+    </div>
+    <button class="btn btn-success" type="submit">Register</button>
+    @if (!Model.IsValid)
+    {
+        <label class="text-danger">Password must follow rules!</label>
+    }
+    <br/>
+    @Html.ValidationSummary()
+</form>

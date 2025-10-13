@@ -1,12 +1,14 @@
 using EntityFrameworkCore.EncryptColumn.Extension;
 using EntityFrameworkCore.EncryptColumn.Interfaces;
 using EntityFrameworkCore.EncryptColumn.Util;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using recipe_tracker.Database.Models;
 
 namespace recipe_tracker.Database;
 
-public class RecipeTrackerContext : DbContext
+public class RecipeTrackerContext : IdentityDbContext<IdentityUser>
 {
     private readonly IEncryptionProvider _encryptionProvider;
 
@@ -25,7 +27,6 @@ public class RecipeTrackerContext : DbContext
     public DbSet<Instruction> Instructions { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<RecipeImage> RecipeImages { get; set; }
-    public DbSet<User> Users { get; set; }
 
     public string DbPath { get; }
 
@@ -37,5 +38,6 @@ public class RecipeTrackerContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseEncryption(_encryptionProvider);
+        base.OnModelCreating(modelBuilder);
     }
 }

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using recipe_tracker.Database;
@@ -31,21 +32,24 @@ public class HomeController(ILogger<HomeController> logger, RecipeTrackerContext
         return View(vm);
     }
 
+    [Authorize]
     [HttpGet]
     public IActionResult AddRecipe()
     {
-        return View(new RecipeViewModel { Instructions = [], Ingredients = [] });
+        return View(new RecipeViewModel { Instructions = [], Ingredients = [], UserName = "" });
     }
 
+    [Authorize]
     [HttpPost]
     public IActionResult AddRecipe(RecipeViewModel recipe)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid && User.Identity?.Name == null)
         {
             logger.LogWarning("AddRecipeViewModel is not valid aborting");
             return View(recipe);
         }
 
+        recipe.UserName = User.Identity?.Name ?? "";
         var dbRecipe = recipe.ToRecipeDbModel();
         logger.LogInformation("{Title} recipe is valid saving to db", dbRecipe.RecipeDetails.Title);
         dbContext.Recipes.Add(dbRecipe);

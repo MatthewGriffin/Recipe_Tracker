@@ -9,7 +9,7 @@ public class RecipeViewModel
     public RecipeDetailsViewModel RecipeDetails { get; init; } = new();
     public required List<InstructionViewModel> Instructions { get; init; }
     public required List<IngredientViewModel> Ingredients { get; init; }
-    public UserViewModel User { get; init; } = new();
+    public required string UserName { get; set; }
 
     public Recipe ToRecipeDbModel()
     {
@@ -23,7 +23,7 @@ public class RecipeViewModel
                 .. Ingredients.Select(i => new Ingredient
                     { Detail = i.Detail, Quantity = i.Quantity, Unit = i.Unit })
             ],
-            User = User
+            UserName = UserName
         };
     }
 }

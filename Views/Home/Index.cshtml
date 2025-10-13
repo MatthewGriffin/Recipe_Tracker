@@ -1,7 +1,11 @@
 ﻿@model List<RecipeViewModel>
 
-<div class="text-center">
-    <h1>Recipes</h1>
+<div class="text-center row">
+    <h1 class="col-10">Recipes</h1>
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <a class="form-label col m-md-auto" asp-action="AddRecipe">New Recipe +</a>
+    }
 </div>
 <hr/>
 @foreach (var recipe in Model)

@@ -1,0 +1,14 @@
+@model LoginViewModel;
+
+<form asp-controller="Account" asp-action="Login" method="post">
+    <div>
+        <label>Email</label>
+        <input type="email" asp-for="Email"/>
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="password" asp-for="Password"/>
+    </div>
+    <button type="submit">Login</button>
+    @Html.ValidationSummary()
+</form>

@@ -1,12 +1,18 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using recipe_tracker.Database;
+using recipe_tracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<RecipeTrackerContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<RecipeTrackerContext>().AddDefaultTokenProviders();
 builder.Services.AddResponseCaching();
+
+builder.Services.AddScoped<RoleSeeder>();
 
 var app = builder.Build();
 
@@ -19,18 +25,26 @@ if (!app.Environment.IsDevelopment())
 }
 
 //Auto apply pending migrations on start (this way new deployments auto create db structure)
-using (var context = new RecipeTrackerContext())
+await using (var context = new RecipeTrackerContext())
 {
     context.Database.Migrate();
 }
 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
 
+// Seed roles when the application starts
+using (var scope = app.Services.CreateScope())
+{
+    var roleSeeder = scope.ServiceProvider.GetRequiredService<RoleSeeder>();
+    await roleSeeder.SeedRolesAsync();
+}
+
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+        "default",
+        "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 app.Run();
