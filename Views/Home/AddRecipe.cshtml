@@ -8,19 +8,21 @@
     <h1 class="h1">Add new Recipe</h1>
 </div>
 
-<form class="row" asp-controller="Home" asp-action="AddRecipe" method="post" enctype="multipart/form-data">
+<form id="addRecipeForm" class="row" asp-controller="Home" asp-action="AddRecipe" method="post"
+      enctype="multipart/form-data">
     <div class="row pb-4">
         <div class="d-inline">
             <h3 class="h3 d-inline">Details</h3>
             <div class="float-end d-inline">
-                <input id="btnSubmit" type="submit" class="btn btn-secondary"/>
+                <input id="btnSubmit" type="submit" class="btn btn-success"/>
             </div>
         </div>
         <hr/>
         <div class="col-md-12">
             @Html.LabelFor(m => m.RecipeDetails.Title, new { @class = "form-label" })
             @Html.TextBoxFor(m => m.RecipeDetails.Title, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Title, "", htmlAttributes: new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.RecipeDetails.Title, "", new { @class = "text-danger" })
+            <label id="recDetTitleVal" class="text-danger" style="display: none">Title is required</label>
         </div>
         <div class="col-md-12">
             @Html.LabelFor(m => m.RecipeDetails.Image)
@@ -29,128 +31,254 @@
         <div class="col-md-12">
             @Html.LabelFor(m => m.RecipeDetails.Description, new { @class = "form-label" })
             @Html.TextAreaFor(m => m.RecipeDetails.Description, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Description, "", htmlAttributes: new
-            {
-                @class =
-                    "text-danger"
-            })
-        </div>
-        <div class="col-md-6">
-            @Html.LabelFor(m => m.RecipeDetails.PrepMins, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.RecipeDetails.PrepMins, new { @class = "form-control", type = "number" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.PrepMins, "", htmlAttributes: new
-            {
-                @class = "text-danger"
-            })
-        </div>
-        <div class="col-md-6">
-            @Html.LabelFor(m => m.RecipeDetails.CookMins, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.RecipeDetails.CookMins, new { @class = "form-control", type = "number" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.CookMins, "", htmlAttributes: new
-            {
-                @class = "text-danger"
-            })
-
-        </div>
-        <div class="col-md-6">
-            @Html.LabelFor(m => m.RecipeDetails.Servings, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.RecipeDetails.Servings, new { @class = "form-control", type = "number" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Servings, "", htmlAttributes: new
-            {
-                @class = "text-danger"
-            })
-
-        </div>
-        <div class="col-md-6">
-            @Html.LabelFor(m => m.RecipeDetails.Tags, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.RecipeDetails.Tags, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Tags, "", htmlAttributes: new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.RecipeDetails.Description, "", new { @class = "text-danger" })
+            <label id="recDetDescriptionVal" class="text-danger" style="display: none">Description is required</label>
         </div>
     </div>
-    <div class="row pb-4">
+    <div class="row">
         <hr/>
         <h3 class="h3">@Html.DisplayNameFor(m => m.Ingredients)</h3>
         <hr/>
-        <table>
-            <tbody id="ingredientsBody">
-            @{
-                for (var i = 0; i < Model.Ingredients.Count;)
-                {
+        <div class="p-md-2 pt-md-0">
+            <div class="form-control p-0">
+                <table class="table table-bordered table-striped rounded-3 border overflow-hidden p-0 m-0">
+                    <thead>
                     <tr>
-                        <td>
-                            @Html.ValueFor(r => r.Ingredients[i].Detail)
+                        <th>
+                            <label class="form-label">Ingredient</label>
+                        </th>
+                        <th>
+                            <label class="form-label">Quantity</label>
+                        </th>
+                        <th>
+                            <label class="form-label">Unit</label>
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="ingredientsBody">
+                    @{
+                        <tr></tr>
+                        if (Model.Ingredients != null && Model.Ingredients.Any())
+                        {
+                            for (var i = 0; i < Model.Ingredients.Count;)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.ValueFor(r => r.Ingredients[i].Detail)
+                                    </td>
+                                    <td>
+                                        @Html.ValueFor(r => r.Ingredients[i].Quantity)
+                                    </td>
+                                    <td>
+                                        @Html.ValueFor(r => r.Ingredients[i].Unit)
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            }
+                        }
+                    }
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td class="align-top">
+                            <input id="addIngredient" class="form-control"/>
+                            <label id="addIngredientVal" style="display:none;" class="text-danger">Ingredient name
+                                                                                                   required</label>
+                        </td>
+                        <td class="align-top">
+                            <input id="addIngQuantity" type="number" value="0" class="form-control"/>
+                            <label id="addIngQuantityVal" style="display:none;" class="text-danger">Quantity must be a
+                                                                                                    number
+                                                                                                    above 0</label>
+                        </td>
+                        <td class="align-top">
+                            <input id="addIngUnit" class="form-control"/>
+                            <label id="addIngUnitVal" style="display:none;"
+                                   class="text-danger">Unit type required</label>
+                        </td>
+                        <td class="align-top">
+                            <input type="button" id="btnAddIngredient" value="Add ingredient" class="btn btn-secondary"/>
                         </td>
                     </tr>
-                }
-            }
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>
-                    <input id="addIngredient"/>
-                </td>
-                <td>
-                    <input type="button" id="btnAddIngredient" value="Add ingredient"/>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
-        @Html.ValidationMessageFor(m => m.Ingredients, "", htmlAttributes: new { @class = "text-danger" })
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <label id="ingredientSubmitVal" class="text-danger"
+               style="display: none">At least one ingredient required</label>
     </div>
     <div class="row">
         <hr/>
         <h3 class="h3">@Html.DisplayNameFor(m => m.Instructions)</h3>
+        <h6>*You do not need to include numbers these will be added automatically*</h6>
         <hr/>
-        <table>
-            <tbody id="instructionsBody">
-            @{
-                for (var i = 0; i < Model.Instructions.Count;)
-                {
+        <div class="p-md-2 pt-md-0">
+            <div class="form-control p-0">
+                <table class="table table-bordered table-striped rounded-3 border overflow-hidden p-0 m-0">
+                    <thead>
                     <tr>
-                        <td>
-                            @Html.ValueFor(r => r.Instructions[i].Text)
+                        <th class="col-1">#</th>
+                        <th class="col-md-12">Instruction</th>
+                        <th class="col-1"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="instructionsBody">
+                    <tr></tr>
+                    @{
+                        if (Model.Instructions != null && Model.Instructions.Any())
+                        {
+                            for (var i = 0; i < Model.Instructions.Count;)
+                            {
+                                <tr>
+                                    <th>
+                                        @i
+                                    </th>
+                                    <td>
+                                        @Html.ValueFor(r => r.Instructions[i].Text)
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            }
+                        }
+                    }
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <td class="align-top">
+                            <input id="addInstruction" class="form-control"/>
+                            <label id="addInstructionVal" class="text-danger"
+                                   style="display:none;"> Instruction is required </label>
+                        </td>
+                        <td class="align-top">
+                            <input type="button" id="btnAddInstruction" value="Add Instruction"
+                                   class="btn btn-secondary"/>
                         </td>
                     </tr>
-                }
-            }
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>
-                    <input id="addInstruction"/>
-                </td>
-                <td>
-                    <input type="button" id="btnAddInstruction" value="Add Instruction"/>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
-        @Html.ValidationMessageFor(m => m.Instructions, "", htmlAttributes: new { @class = "text-danger" })
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <label id="instructionSubmitVal" class="text-danger"
+               style="display: none">At least one instruction required</label>
     </div>
 </form>
 
 @section Scripts {
     <script>
-        $('#btnAddIngredient').click(function () {
-            let rowCount = $('#ingredientsBody tr').length;
-            let ingredient = $('#addIngredient').val();
+        $('#addRecipeForm').submit(function (e) {
+            let ingredientsBodyRowCount = $('#ingredientsBody tr').length - 1;
+            let instructionsBodyRowCount = $('#instructionsBody tr').length - 1;
+            let recDetTitle = $('#RecipeDetails_Title').val();
+            let recDetDescription = $('#RecipeDetails_Description').val();
 
-            let newRowHtml =
-                '<tr><td>' +
-                '<input name="Ingredients[' + rowCount + '].Detail" value="' + ingredient + '"/>' +
-                '</td></tr>'
-            $('#ingredientsBody').append(newRowHtml);
+            let valid = true;
+
+            if (recDetTitle.length === 0) {
+                $('#recDetTitleVal').show();
+                valid = false;
+            } else {
+                $('#recDetTitleVal').hide();
+            }
+            if (recDetDescription.length === 0) {
+                $('#recDetDescriptionVal').show();
+                valid = false;
+            } else {
+                $('#recDetDescriptionVal').hide();
+            }
+            if (ingredientsBodyRowCount === 0) {
+                $('#ingredientSubmitVal').show();
+                valid = false;
+            } else {
+                $('#ingredientSubmitVal').hide();
+            }
+            if (instructionsBodyRowCount === 0) {
+                $('#instructionSubmitVal').show();
+                valid = false;
+            } else {
+                $('#instructionSubmitVal').hide();
+            }
+
+            return valid;
+        })
+
+        $('#btnAddIngredient').click(function () {
+            let rowCount = $('#ingredientsBody tr').length - 1;
+            let ingredientTB = $('#addIngredient');
+            let quantityTB = $('#addIngQuantity');
+            let unitTB = $('#addIngUnit');
+
+            let valid = true;
+            if (ingredientTB.val() === "") {
+                $('#addIngredientVal').show();
+                valid = false;
+            } else {
+                $('#addIngredientVal').hide();
+            }
+            if (quantityTB.val() === "" || quantityTB.val() === "0" || parseFloat(quantityTB.val()) <=
+                0) {
+                $('#addIngQuantityVal').show();
+                valid = false;
+            } else {
+                $('#addIngQuantityVal').hide();
+            }
+            if (unitTB.val() === "") {
+                $('#addIngUnitVal').show();
+                valid = false;
+            } else {
+                $('#addIngUnitVal').hide();
+            }
+            if (!valid) {
+                return;
+            }
+
+            AddTblRow("Ingredients", [["Detail", ingredientTB.val()], ["Quantity", quantityTB.val()],
+                ["Unit", unitTB.val()]], rowCount, '#ingredientsBody');
+
+            ingredientTB.val("");
+            quantityTB.val("0");
+            unitTB.val("");
         });
 
         $('#btnAddInstruction').click(function () {
-            let rowCount = $('#instructionsBody tr').length;
-            let instruction = $('#addInstruction').val();
+            let rowCount = $('#instructionsBody tr').length - 1;
+            let instructionTB = $('#addInstruction');
 
-            let newRowHtml =
-                '<tr><td>' +
-                '<input name="Instructions[' + rowCount + '].Text" value="' + instruction + '"/>' +
-                '</td></tr>'
-            $('#instructionsBody').append(newRowHtml);
+            let valid = true;
+            if (instructionTB.val() === "") {
+                $('#addInstructionVal').show();
+                valid = false;
+            } else {
+                $('#addInstructionVal').hide();
+            }
+            if (!valid) {
+                return;
+            }
+
+            AddTblRow("Instructions", [[null, rowCount + 1], ["Text", instructionTB.val()]], rowCount,
+                '#instructionsBody');
+
+            instructionTB.val("");
         });
+
+        function AddTblRow(name, fields, row, tbodyID) {
+            let newRowHtml = '<tr>';
+            for (let i = 0; i < fields.length; i++) {
+                let field = fields[i][0];
+                let value = fields[i][1];
+
+                if (field != null) {
+                    newRowHtml += '<td>' +
+                        '<input name="' + name + '[' + row + '].' + field + '" value="' + value + '" class="form-control" />' +
+                        '</td>';
+                } else {
+                    newRowHtml += '<th>' + value + '</th>'
+                }
+
+            }
+            newRowHtml += '<td></td></tr>';
+            $(tbodyID).append(newRowHtml);
+        }
     </script>
 }

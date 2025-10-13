@@ -8,8 +8,10 @@ namespace recipe_tracker.Database.Models;
 
 public class Recipe
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int RecipeId { get; init; }
+
     public required RecipeDetails RecipeDetails { get; init; }
     public required List<Instruction> Instructions { get; init; } = [];
     public required List<Ingredient> Ingredients { get; init; } = [];
@@ -21,31 +23,30 @@ public class Recipe
             RecipeId = RecipeId,
             RecipeDetails = RecipeDetails,
             Instructions = [.. Instructions.Select(i => new InstructionViewModel { Text = i.Text })],
-            Ingredients = [.. Ingredients.Select(i => new IngredientViewModel { Detail = i.Detail })]
+            Ingredients =
+            [
+                .. Ingredients.Select(i => new IngredientViewModel
+                    { Detail = i.Detail, Quantity = i.Quantity, Unit = i.Unit })
+            ]
         };
     }
 }
 
 public class RecipeDetails
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [UsedImplicitly]
     public int RecipeDetailsId { get; set; }
+
     [MaxLength(50)]
     [DisplayName("Recipe Name: ")]
     public required string Title { get; init; }
+
     [MaxLength(1000)]
     [DisplayName("Description: ")]
     public required string Description { get; init; }
-    [DisplayName("Servings: ")]
-    public required int Servings { get; init; } 
-    [DisplayName("Prep Time (Mins): ")]
-    public required int PrepMins { get; init; }
-    [DisplayName("Cook Time (Mins): ")]
-    public required int CookMins { get; init; } 
-    [DisplayName("Tags: ")]
-    [MaxLength(100)]
-    public required string Tags { get; init; }
+
     public RecipeImage? Image { get; private init; }
 
     public static implicit operator RecipeDetails(RecipeDetailsViewModel v)
@@ -56,10 +57,6 @@ public class RecipeDetails
         {
             Title = v.Title,
             Description = v.Description,
-            Servings = v.Servings,
-            PrepMins = v.PrepMins,
-            CookMins = v.CookMins,
-            Tags = v.Tags,
             Image = new RecipeImage
             {
                 Image = memoryStream.ToArray()
@@ -70,23 +67,31 @@ public class RecipeDetails
 
 public class Instruction
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int? InstructionId { get; init; }
-    [MaxLength(500)]
-    public required string Text { get; init; }
+
+    [MaxLength(500)] public required string Text { get; init; }
 }
 
 public class Ingredient
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int? IngredientId { get; init; }
-    [MaxLength(50)]
-    public required string Detail { get; init; }
+
+    [MaxLength(50)] public required string Detail { get; init; }
+
+    public required int Quantity { get; init; }
+
+    [MaxLength(50)] public required string Unit { get; init; }
 }
 
 public class RecipeImage
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ImageId { get; init; }
+
     public required byte[] Image { get; init; }
 }

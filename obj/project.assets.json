@@ -5055,11 +5055,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/recipe_tracker.csproj",
+      "projectUniqueName": "/run/media/matthew/MegaSSD/Recipe_Tracker_NET/recipe_tracker/recipe_tracker.csproj",
       "projectName": "recipe_tracker",
-      "projectPath": "/run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/recipe_tracker.csproj",
+      "projectPath": "/run/media/matthew/MegaSSD/Recipe_Tracker_NET/recipe_tracker/recipe_tracker.csproj",
       "packagesPath": "/home/matthew/.nuget/packages/",
-      "outputPath": "/run/media/matthew/Mega SSD/Recipe_Tracker_NET/recipe_tracker/obj/",
+      "outputPath": "/run/media/matthew/MegaSSD/Recipe_Tracker_NET/recipe_tracker/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/matthew/.nuget/NuGet/NuGet.Config"
