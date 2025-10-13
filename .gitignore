@@ -418,3 +418,4 @@ FodyWeavers.xsd
 *.msp
 /.idea/.idea.recipe_tracker/.idea/dataSources.xml
 /identifier.sqlite
+/appsettings.json
