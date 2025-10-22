@@ -1,6 +1,3 @@
-using EntityFrameworkCore.EncryptColumn.Extension;
-using EntityFrameworkCore.EncryptColumn.Interfaces;
-using EntityFrameworkCore.EncryptColumn.Util;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +7,6 @@ namespace recipe_tracker.Database;
 
 public class RecipeTrackerContext : IdentityDbContext<IdentityUser>
 {
-    private readonly IEncryptionProvider _encryptionProvider;
-
     public RecipeTrackerContext()
     {
         const Environment.SpecialFolder folder = Environment.SpecialFolder.LocalApplicationData;
@@ -19,8 +14,6 @@ public class RecipeTrackerContext : IdentityDbContext<IdentityUser>
         path = Path.Join(path, "RecipeTracker");
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         DbPath = Path.Join(path, "RecipeTracker.db");
-
-        _encryptionProvider = new GenerateEncryptionProvider("IjV7Zm2lvcBicJ2AmeSWlkxZCNxY8Bjp");
     }
 
     public DbSet<Recipe> Recipes { get; set; }
@@ -37,7 +30,6 @@ public class RecipeTrackerContext : IdentityDbContext<IdentityUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseEncryption(_encryptionProvider);
         base.OnModelCreating(modelBuilder);
     }
 }
