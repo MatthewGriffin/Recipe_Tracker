@@ -38,8 +38,6 @@ public class AccountController(
             return View(regUser);
         }
 
-        await userManager.AddToRoleAsync(user, "User");
-
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.UserName, token },
             Request.Scheme);
@@ -51,6 +49,8 @@ public class AccountController(
             user.UserName
             , body, "Please confirm your account for recipe tracker!");
         sender.SendEmail();
+
+        await userManager.AddToRoleAsync(user, "User");
 
         return RedirectToAction("Index", "Home");
     }

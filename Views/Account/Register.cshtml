@@ -1,6 +1,6 @@
 @model RegisterViewModel;
 
-<form asp-controller="Account" asp-action="Register" method="post">
+<form asp-controller="Account" asp-action="Register" method="post" onsubmit="DisableButton()">
     <div>
         <label class="form-label">Email</label>
         <input class="form-control" type="email" asp-for="Email"/>
@@ -9,11 +9,14 @@
         <label class="form-label">Password</label>
         <input class="form-control" type="password" asp-for="Password"/>
     </div>
-    <button class="btn btn-success" type="submit">Register</button>
-    @if (!Model.IsValid)
-    {
-        <label class="text-danger">Password must follow rules!</label>
-    }
+    <button id="register" class="btn btn-success" type="submit">Register</button>
     <br/>
     @Html.ValidationSummary()
 </form>
+@section Scripts {
+    <script>
+        function DisableButton(){
+            $('#register').prop("disabled", true);
+        }
+    </script>
+}

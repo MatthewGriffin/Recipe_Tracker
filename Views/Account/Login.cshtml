@@ -1,14 +1,22 @@
 @model LoginViewModel;
 
-<form asp-controller="Account" asp-action="Login" method="post">
+<form asp-controller="Account" asp-action="Login" method="post" onsubmit="DisableButton()">
     <div>
-        <label>Email</label>
-        <input type="email" asp-for="Email"/>
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" asp-for="Email" />
     </div>
     <div>
-        <label>Password</label>
-        <input type="password" asp-for="Password"/>
+        <label class="form-label">Password</label>
+        <input class="form-control" type="password" asp-for="Password" />
     </div>
-    <button type="submit">Login</button>
+    <button class="btn btn-success" id="login" type="submit">Login</button>
     @Html.ValidationSummary()
 </form>
+
+@section Scripts {
+    <script>
+        function DisableButton(){
+            $('#register').prop("disabled", true);
+        }
+    </script>
+}
