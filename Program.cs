@@ -37,6 +37,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
+app.UseHttpsRedirection();
 
 // Seed roles when the application starts
 using (var scope = app.Services.CreateScope())

@@ -10,6 +10,4 @@ public class RegisterViewModel
 
     [Required(ErrorMessage = "Please enter password.")]
     public required string Password { get; init; }
-
-    public bool IsValid { get; init; } = true;
 }
