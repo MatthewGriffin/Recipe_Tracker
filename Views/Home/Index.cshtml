@@ -33,12 +33,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12" style="min-height:160px">
+                    <div class="col-md-12" style="min-height: 222px">
                         @Html.LabelFor(r => r.First().RecipeDetails.Description)
                         <label class="form-label">@recipe.RecipeDetails.Description</label>
                     </div>
                     <div class="col-md-12 border-top">
-                        Uploaded by @recipe.UserName
+                        <label class="form-label">Uploaded by: @recipe.UserName</label>
                     </div>
                 </div>
             </div>
