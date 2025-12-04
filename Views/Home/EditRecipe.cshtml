@@ -1,16 +1,29 @@
 @model RecipeViewModel;
 
 @{
-    ViewData["Title"] = "Add Recipe";
+    ViewData["Title"] = "Edit Recipe";
 }
 
 <div class="text-center">
-    <h1 class="h1">Add new Recipe</h1>
+    <h1 class="h1">Edit Recipe</h1>
 </div>
 
-<form id="addRecipeForm" class="row" asp-controller="Home" asp-action="AddRecipe" method="post"
+@{
+    var imgSrc = "";
+    if (Model.RecipeDetails.ImageBytes != null)
+    {
+        var base64 = Convert.ToBase64String(Model.RecipeDetails.ImageBytes);
+        imgSrc = $"data:image/png;base64,{base64}";
+    }
+}
+
+<form id="editRecipeForm" class="row" asp-controller="Home" asp-action="EditRecipe" method="post"
       enctype="multipart/form-data">
-    <div class="row pb-4">
+
+    @Html.HiddenFor(x => x.RecipeId)
+    @Html.HiddenFor(x => x.UserName)
+
+    <div class="pb-2">
         <div class="d-inline">
             <h3 class="h3 d-inline">Details</h3>
             <div class="float-end d-inline">
@@ -18,21 +31,33 @@
             </div>
         </div>
         <hr/>
-        <div class="col-md-12">
-            @Html.LabelFor(m => m.RecipeDetails.Title, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.RecipeDetails.Title, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Title, "", new { @class = "text-danger" })
-            <label id="recDetTitleVal" class="text-danger" style="display: none">Title is required</label>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.RecipeDetails.Title, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.RecipeDetails.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.RecipeDetails.Title, "", new { @class = "text-danger" })
+                <label id="recDetTitleVal" class="text-danger" style="display: none">Title is required</label>
+            </div>
         </div>
-        <div class="col-md-12">
-            @Html.LabelFor(m => m.RecipeDetails.Image)
-            @Html.TextBoxFor(m => m.RecipeDetails.Image, new { @class = "form-control", type = "file" })
-        </div>
-        <div class="col-md-12">
-            @Html.LabelFor(m => m.RecipeDetails.Description, new { @class = "form-label" })
-            @Html.TextAreaFor(m => m.RecipeDetails.Description, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.RecipeDetails.Description, "", new { @class = "text-danger" })
-            <label id="recDetDescriptionVal" class="text-danger" style="display: none">Description is required</label>
+        <div class="row pt-2">
+            <div class="col-md-6">
+                <img src="@imgSrc" class="mx-auto d-block" style="max-height:200px;width:auto;height:auto"
+                     alt="this is where id put the image for the recipe.... IF I HAD ONE!"/>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    @Html.LabelFor(m => m.RecipeDetails.Image)
+                    @Html.TextBoxFor(m => m.RecipeDetails.Image, new { @class = "form-control", type = "file", accept = "image/*" })
+                    @Html.ValidationMessageFor(m => m.RecipeDetails.Image, "", new { @class = "text-danger" })
+                </div>
+                <div class="row h-50">
+                    @Html.LabelFor(m => m.RecipeDetails.Description, new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.RecipeDetails.Description, new { @class = "form-control h-100" })
+                    @Html.ValidationMessageFor(m => m.RecipeDetails.Description, "", new { @class = "text-danger" })
+                    <label id="recDetDescriptionVal" class="text-danger" style="display: none">Description is
+                        required</label>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -57,7 +82,32 @@
                     </tr>
                     </thead>
                     <tbody id="ingredientsBody">
-                    <tr></tr>
+                    @{
+                        <tr></tr>
+                        if (Model.Ingredients != null && Model.Ingredients.Any())
+                        {
+                            for (var i = 0; i < Model.Ingredients.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.TextBoxFor(r => r.Ingredients[i].Detail, new { @class = "form-control" })
+                                        @Html.HiddenFor(r => r.Ingredients[i].Id)
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(r => r.Ingredients[i].Quantity, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(r => r.Ingredients[i].Unit, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        <input type="button" id="btnRemoveInstruction" class="btn btn-danger"
+                                               onclick="RemoveTblRow(this, 'Ingredients')"
+                                               value="Delete"/>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
                     </tbody>
                     <tfoot>
                     <tr>
@@ -107,18 +157,24 @@
                     <tbody id="instructionsBody">
                     <tr></tr>
                     @{
-                        if (Model.Instructions.Any())
+                        if (Model.Instructions != null && Model.Instructions.Any())
                         {
-                            for (var i = 0; i < Model.Instructions.Count;)
+                            for (var i = 0; i < Model.Instructions.Count; i++)
                             {
+                                var num = i + 1;
                                 <tr>
                                     <th>
-                                        @i
+                                        @num
                                     </th>
                                     <td>
-                                        @Html.ValueFor(r => r.Instructions[i].Text)
+                                        @Html.TextBoxFor(r => r.Instructions[i].Text, new { @class = "form-control" })
+                                        @Html.HiddenFor(r => r.Instructions[i].Id)
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <input type="button" id="btnRemoveInstruction" class="btn btn-danger"
+                                               onclick="RemoveTblRow(this, 'Instructions')"
+                                               value="Delete"/>
+                                    </td>
                                 </tr>
                             }
                         }
@@ -145,6 +201,7 @@
                style="display: none">At least one instruction required</label>
     </div>
 </form>
+
 
 @section Scripts {
     <script>
@@ -243,6 +300,37 @@
             instructionTB.val("");
         });
 
+        function RemoveTblRow(button, inputName) {
+            let btn = $(button);
+            let row = btn.closest('tr');
+
+            $(row).siblings().each(function (index) {
+                //find row index number if exists
+                let cols = $(this).find('th').each(function () {
+                    let rowId = Number($(this).html());
+                    if (rowId) {
+                        $(this).html(index);
+                    }
+                });
+
+                $(this).find('input[name*="' + inputName + '"]').each(function () {
+                    let name = $(this).attr("name");
+                    let id = $(this).attr('id');
+                    let rowId = Number(name.match(/\d+/g).toString());
+                    let newName = name.replace(rowId, index - 1);
+
+                    $(this).attr('name', newName);
+
+                    if (id) {
+                        let newId = id.replace(rowId, index - 1);
+                        $(this).attr('id', newId);
+                    }
+                });
+            });
+
+            row.remove();
+        }
+
         function AddTblRow(name, fields, row, tbodyID) {
             let newRowHtml = '<tr>';
             for (let i = 0; i < fields.length; i++) {
@@ -256,10 +344,10 @@
                 } else {
                     newRowHtml += '<th>' + value + '</th>'
                 }
-
             }
-            newRowHtml += '<td></td></tr>';
+            newRowHtml += '<td><input type="button" id="btnRemoveInstruction" class="btn btn-danger" value="Delete" onclick="RemoveTblRow(this)" </td></tr>';
             $(tbodyID).append(newRowHtml);
         }
+
     </script>
 }

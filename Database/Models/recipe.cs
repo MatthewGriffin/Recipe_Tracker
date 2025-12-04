@@ -24,11 +24,12 @@ public class Recipe
         {
             RecipeId = RecipeId,
             RecipeDetails = RecipeDetails,
-            Instructions = [.. Instructions.Select(i => new InstructionViewModel { Text = i.Text })],
+            Instructions =
+                [.. Instructions.Select(i => new InstructionViewModel { Text = i.Text, Id = i.InstructionId })],
             Ingredients =
             [
                 .. Ingredients.Select(i => new IngredientViewModel
-                    { Detail = i.Detail, Quantity = i.Quantity, Unit = i.Unit })
+                    { Detail = i.Detail, Quantity = i.Quantity, Unit = i.Unit, Id = i.IngredientId })
             ],
             UserName = UserName
         };
@@ -44,13 +45,13 @@ public class RecipeDetails
 
     [MaxLength(50)]
     [DisplayName("Recipe Name: ")]
-    public required string Title { get; init; }
+    public required string Title { get; set; }
 
     [MaxLength(1000)]
     [DisplayName("Description: ")]
-    public required string Description { get; init; }
+    public required string Description { get; set; }
 
-    public RecipeImage? Image { get; private init; }
+    public RecipeImage? Image { get; set; }
 
     public static implicit operator RecipeDetails(RecipeDetailsViewModel v)
     {
@@ -62,7 +63,7 @@ public class RecipeDetails
             Description = v.Description,
             Image = new RecipeImage
             {
-                Image = memoryStream.ToArray()
+                ImageBytes = memoryStream.ToArray()
             }
         };
     }
@@ -96,5 +97,5 @@ public class RecipeImage
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ImageId { get; init; }
 
-    public required byte[] Image { get; init; }
+    public required byte[] ImageBytes { get; set; }
 }
