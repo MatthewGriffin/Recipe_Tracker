@@ -220,8 +220,8 @@ namespace recipe_tracker.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Quantity")
+                        .HasColumnType("REAL");
 
                     b.Property<int?>("RecipeId")
                         .HasColumnType("INTEGER");

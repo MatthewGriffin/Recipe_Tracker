@@ -86,7 +86,7 @@ public class Ingredient
 
     [MaxLength(50)] public required string Detail { get; init; }
 
-    public required int Quantity { get; init; }
+    public required double Quantity { get; init; }
 
     [MaxLength(50)] public required string Unit { get; init; }
 }
