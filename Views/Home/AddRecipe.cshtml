@@ -73,8 +73,6 @@
                         </td>
                         <td class="align-top">
                             <input id="addIngUnit" class="form-control"/>
-                            <label id="addIngUnitVal" style="display:none;"
-                                   class="text-danger">Unit type required</label>
                         </td>
                         <td class="align-top">
                             <input type="button" id="btnAddIngredient" value="Add ingredient"
@@ -166,7 +164,7 @@
         })
 
         $('#btnAddIngredient').click(function () {
-            let rowCount = $('#ingredientsBody tr').length - 1;
+            let rowCount = $('#ingredientsBody tr').length;
             let ingredientTB = $('#addIngredient');
             let quantityTB = $('#addIngQuantity');
             let unitTB = $('#addIngUnit');
@@ -185,12 +183,6 @@
             } else {
                 $('#addIngQuantityVal').hide();
             }
-            if (unitTB.val() === "") {
-                $('#addIngUnitVal').show();
-                valid = false;
-            } else {
-                $('#addIngUnitVal').hide();
-            }
             if (!valid) {
                 return;
             }
@@ -204,7 +196,7 @@
         });
 
         $('#btnAddInstruction').click(function () {
-            let rowCount = $('#instructionsBody tr').length - 1;
+            let rowCount = $('#instructionsBody tr').length;
             let instructionTB = $('#addInstruction');
 
             let valid = true;

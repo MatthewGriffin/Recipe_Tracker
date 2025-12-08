@@ -88,7 +88,7 @@ public class Ingredient
 
     public required double Quantity { get; init; }
 
-    [MaxLength(50)] public required string Unit { get; init; }
+    [MaxLength(50)] public string? Unit { get; init; }
 }
 
 public class RecipeImage

@@ -227,7 +227,6 @@ namespace recipe_tracker.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Unit")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 

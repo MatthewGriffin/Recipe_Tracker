@@ -43,7 +43,12 @@ public class HomeController(ILogger<HomeController> logger, RecipeTrackerContext
     [HttpPost]
     public IActionResult AddRecipe(RecipeViewModel recipe)
     {
-        if (!ModelState.IsValid && User.Identity?.Name == null)
+        //since it`s a new recipe set to current user
+        recipe.UserName = User.Identity?.Name ?? throw new NullReferenceException();
+        //since model has changed revalidate
+        ModelState.Clear();
+        TryValidateModel(recipe);
+        if (!ModelState.IsValid)
         {
             logger.LogWarning("AddRecipeViewModel is not valid aborting");
             return View(recipe);

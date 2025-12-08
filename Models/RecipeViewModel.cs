@@ -7,8 +7,8 @@ public class RecipeViewModel
 {
     public int RecipeId { get; init; }
     public RecipeDetailsViewModel RecipeDetails { get; init; } = new();
-    public required List<InstructionViewModel>? Instructions { get; init; } = [];
-    public required List<IngredientViewModel>? Ingredients { get; init; } = [];
+    public required List<InstructionViewModel> Instructions { get; init; } = [];
+    public required List<IngredientViewModel> Ingredients { get; init; } = [];
     public required string UserName { get; set; }
 
     public Recipe ToRecipeDbModel()
@@ -75,7 +75,7 @@ public class IngredientViewModel
     public int? Id { get; init; }
     public required string Detail { get; init; }
     public required double Quantity { get; init; }
-    public required string Unit { get; init; }
+    public string? Unit { get; init; }
 
     public static implicit operator IngredientViewModel(Ingredient v)
     {
