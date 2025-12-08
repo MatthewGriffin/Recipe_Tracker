@@ -86,18 +86,20 @@
                         <tr></tr>
                         if (Model.Ingredients != null && Model.Ingredients.Any())
                         {
+                            //This is done to avoid null propagation warnings
+                            var ingredients = Model.Ingredients;
                             for (var i = 0; i < Model.Ingredients.Count; i++)
                             {
                                 <tr>
                                     <td>
-                                        @Html.TextBoxFor(r => r.Ingredients[i].Detail, new { @class = "form-control" })
-                                        @Html.HiddenFor(r => r.Ingredients[i].Id)
+                                        @Html.TextBoxFor(r => ingredients[i].Detail, new { @class = "form-control" })
+                                        @Html.HiddenFor(r => ingredients[i].Id)
                                     </td>
                                     <td>
-                                        @Html.TextBoxFor(r => r.Ingredients[i].Quantity, new { @class = "form-control" })
+                                        @Html.TextBoxFor(r => ingredients[i].Quantity, new { @class = "form-control" })
                                     </td>
                                     <td>
-                                        @Html.TextBoxFor(r => r.Ingredients[i].Unit, new { @class = "form-control" })
+                                        @Html.TextBoxFor(r => ingredients[i].Unit, new { @class = "form-control" })
                                     </td>
                                     <td>
                                         <input type="button" id="btnRemoveInstruction" class="btn btn-danger"
@@ -159,6 +161,8 @@
                     @{
                         if (Model.Instructions != null && Model.Instructions.Any())
                         {
+                            //This is done to avoid null propagation warnings
+                            var instructions = Model.Instructions;
                             for (var i = 0; i < Model.Instructions.Count; i++)
                             {
                                 var num = i + 1;
@@ -167,8 +171,8 @@
                                         @num
                                     </th>
                                     <td>
-                                        @Html.TextBoxFor(r => r.Instructions[i].Text, new { @class = "form-control" })
-                                        @Html.HiddenFor(r => r.Instructions[i].Id)
+                                        @Html.TextBoxFor(r => instructions[i].Text, new { @class = "form-control" })
+                                        @Html.HiddenFor(r => instructions[i].Id)
                                     </td>
                                     <td>
                                         <input type="button" id="btnRemoveInstruction" class="btn btn-danger"
